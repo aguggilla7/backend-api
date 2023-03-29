@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4ed8736f-7385-47b1-8b33-2489c1de195c" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="employee-details-submission-implementationFlow" doc:id="52590f1c-2582-4169-832b-5c0e78d22d33" >
+		<http:listener doc:name="Listener" doc:id="76b58b8b-2e79-4771-be20-dc0f006d84e7" config-ref="HTTP_Listener_config" path="/api/submit"/>
+		<logger level="INFO" doc:name="Start" doc:id="3e9c945b-8b2d-4014-90e9-c4ae156aae31" message="POST-SUBMIT-EMPLOYEE-DETAILS-IMPLEMENTATION-START"/>
+		<ee:transform doc:name="Transform Message" doc:id="e830d28a-0ad4-4ef0-a9da-10ff1e403d28" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"employeeInformation":
+	{
+	    "employeeId":12345,
+	    "employeeName":"anil kumar",
+	    "mobile":"9502628982",
+	    "organisationMail":"anil-kumar.guggilla@gmail.com"
+	},
+		"applicationStatus":
+			{
+				"statusCode":201,
+				"Message":"Account Created Successfully"
+			}
+	}
+	]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
